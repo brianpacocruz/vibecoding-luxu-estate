@@ -1,7 +1,11 @@
 import { FeaturedPropertyCard } from "@/components/ui/FeaturedPropertyCard";
-import { featuredProperties } from "@/lib/mockData";
+import type { Property } from "@/lib/mockData";
 
-export function FeaturedCollections() {
+interface FeaturedCollectionsProps {
+  properties: Property[];
+}
+
+export function FeaturedCollections({ properties }: FeaturedCollectionsProps) {
   return (
     <section className="mb-16">
       <div className="flex items-end justify-between mb-8">
@@ -21,7 +25,7 @@ export function FeaturedCollections() {
         </a>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {featuredProperties.map((prop) => (
+        {properties.map((prop) => (
           <FeaturedPropertyCard key={prop.id} property={prop} />
         ))}
       </div>
