@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${property.title} | LuxeEstate`,
     description: `Beautiful ${property.beds} bedroom property in ${property.location} for $${property.price}`,
     openGraph: {
-      images: [property.imageUrl],
+      images: [property.images[0]],
     },
   };
 }
@@ -36,7 +36,7 @@ export default async function PropertyPage({ params }: Props) {
     notFound();
   }
 
-  const allImages = property.images?.length ? property.images : [property.imageUrl];
+  const allImages = property.images;
 
   return (
     <>
@@ -46,7 +46,7 @@ export default async function PropertyPage({ params }: Props) {
           <div className="lg:col-span-8 space-y-4">
             <div className="relative aspect-[16/10] overflow-hidden rounded-xl shadow-sm group">
               <Image
-                src={property.imageUrl}
+                src={property.images[0]}
                 alt={property.imageAlt || property.title}
                 fill
                 priority

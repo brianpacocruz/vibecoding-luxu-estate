@@ -18,7 +18,7 @@ export function PropertyCard({ property, className = "" }: PropertyCardProps) {
         <img
           alt={property.imageAlt}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          src={property.imageUrl}
+          src={property.images[0]}
         />
         <button className="absolute top-3 right-3 p-2 bg-white/90 rounded-full hover:bg-mosque hover:text-white transition-colors text-nordic-dark">
           <span className="material-icons text-lg">favorite_border</span>

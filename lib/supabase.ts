@@ -18,7 +18,6 @@ interface PropertyRow {
   beds: number;
   baths: number;
   area: number;
-  image_url: string;
   image_alt: string;
   status: Property["status"];
   is_featured: boolean;
@@ -39,7 +38,6 @@ function rowToProperty(row: PropertyRow): Property {
     beds: row.beds,
     baths: row.baths,
     area: row.area,
-    imageUrl: row.image_url,
     imageAlt: row.image_alt,
     status: row.status,
     isFeatured: row.is_featured,
