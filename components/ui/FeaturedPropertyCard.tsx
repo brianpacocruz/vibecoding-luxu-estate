@@ -1,11 +1,16 @@
+"use client";
+
 import { Property } from "@/lib/mockData";
 import Link from "next/link";
+import { useLocale } from "@/lib/locale-context";
 
 interface FeaturedPropertyCardProps {
   property: Property;
 }
 
 export function FeaturedPropertyCard({ property }: FeaturedPropertyCardProps) {
+  const { t } = useLocale();
+
   return (
     <Link href={`/property/${property.slug}`} className="block">
       <article className="group relative rounded-xl overflow-hidden shadow-soft bg-white">
@@ -43,11 +48,11 @@ export function FeaturedPropertyCard({ property }: FeaturedPropertyCardProps) {
           <div className="flex items-center gap-6 mt-6 pt-6 border-t border-nordic-dark/5">
             <div className="flex items-center gap-2 text-nordic-muted text-sm">
               <span className="material-icons text-lg">king_bed</span>{" "}
-              {property.beds} Beds
+              {property.beds} {t.propertyCard.beds}
             </div>
             <div className="flex items-center gap-2 text-nordic-muted text-sm">
               <span className="material-icons text-lg">bathtub</span>{" "}
-              {property.baths} Baths
+              {property.baths} {t.propertyCard.baths}
             </div>
             <div className="flex items-center gap-2 text-nordic-muted text-sm">
               <span className="material-icons text-lg">square_foot</span>{" "}

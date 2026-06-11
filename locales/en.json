@@ -1,0 +1,80 @@
+{
+  "nav": {
+    "buy": "Buy",
+    "rent": "Rent",
+    "sell": "Sell",
+    "savedHomes": "Saved Homes"
+  },
+  "hero": {
+    "headline1": "Find your",
+    "headline2": "sanctuary",
+    "searchPlaceholder": "Search by city, neighborhood, or address...",
+    "searchButton": "Search",
+    "filtersButton": "Filters"
+  },
+  "featuredCollections": {
+    "title": "Featured Collections",
+    "subtitle": "Curated properties for the discerning eye.",
+    "viewAll": "View all"
+  },
+  "newInMarket": {
+    "title": "New in Market",
+    "subtitle": "Fresh opportunities added this week.",
+    "propertiesFound": "properties found.",
+    "noResults": "No properties found for this filter.",
+    "filterAll": "All",
+    "filterBuy": "Buy",
+    "filterRent": "Rent"
+  },
+  "filters": {
+    "title": "Filters",
+    "location": "Location",
+    "locationPlaceholder": "City, neighborhood, or address",
+    "priceRange": "Price Range",
+    "minPrice": "Min Price",
+    "maxPrice": "Max Price",
+    "propertyType": "Property Type",
+    "anyType": "Any Type",
+    "house": "House",
+    "apartment": "Apartment",
+    "condo": "Condo",
+    "townhouse": "Townhouse",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "amenitiesTitle": "Amenities & Features",
+    "pool": "Swimming Pool",
+    "gym": "Gym",
+    "parking": "Parking",
+    "ac": "Air Conditioning",
+    "wifi": "High-speed Wifi",
+    "patio": "Patio / Terrace",
+    "clearAll": "Clear all filters",
+    "apply": "Apply Filters"
+  },
+  "propertyCard": {
+    "beds": "Beds",
+    "baths": "Baths"
+  },
+  "propertyDetail": {
+    "viewAllPhotos": "View All Photos",
+    "topRatedAgent": "Top Rated Agent",
+    "scheduleVisit": "Schedule Visit",
+    "contactAgent": "Contact Agent",
+    "propertyFeatures": "Property Features",
+    "squareMeters": "Square Meters",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "garage": "Garage",
+    "aboutHome": "About this home",
+    "aboutDesc1": "Experience modern luxury in this architecturally stunning home located in {location}. Designed with an emphasis on indoor-outdoor living, the residence features high ceilings that flood the interiors with natural light.",
+    "aboutDesc2": "The open-concept kitchen is equipped with top-of-the-line appliances and custom cabinetry, perfect for culinary enthusiasts. Retreat to the primary suite, a sanctuary of relaxation with a spa-inspired bath and private balcony.",
+    "amenities": "Amenities",
+    "amenitiesList": ["Smart Home System", "Swimming Pool", "Central Heating & Cooling", "Electric Vehicle Charging", "Private Gym", "Wine Cellar"],
+    "estimatedPayment": "Estimated Payment",
+    "estimatedPaymentDesc": "Starting from {amount}/mo with 20% down",
+    "calculateMortgage": "Calculate Mortgage",
+    "premium": "Premium",
+    "mapNotAvailable": "Map not available",
+    "galleryImage": "Gallery image"
+  }
+}

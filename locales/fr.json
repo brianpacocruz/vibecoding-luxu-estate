@@ -1,0 +1,80 @@
+{
+  "nav": {
+    "buy": "Acheter",
+    "rent": "Louer",
+    "sell": "Vendre",
+    "savedHomes": "Maisons Sauvegardées"
+  },
+  "hero": {
+    "headline1": "Trouvez votre",
+    "headline2": "sanctuaire",
+    "searchPlaceholder": "Cherchez par ville, quartier ou adresse...",
+    "searchButton": "Chercher",
+    "filtersButton": "Filtres"
+  },
+  "featuredCollections": {
+    "title": "Collections en Vedette",
+    "subtitle": "Des propriétés sélectionnées pour l'œil le plus exigeant.",
+    "viewAll": "Voir tout"
+  },
+  "newInMarket": {
+    "title": "Nouveau sur le Marché",
+    "subtitle": "Nouvelles opportunités ajoutées cette semaine.",
+    "propertiesFound": "propriétés trouvées.",
+    "noResults": "Aucune propriété trouvée pour ce filtre.",
+    "filterAll": "Tous",
+    "filterBuy": "Acheter",
+    "filterRent": "Louer"
+  },
+  "filters": {
+    "title": "Filtres",
+    "location": "Emplacement",
+    "locationPlaceholder": "Ville, quartier ou adresse",
+    "priceRange": "Fourchette de Prix",
+    "minPrice": "Prix Minimum",
+    "maxPrice": "Prix Maximum",
+    "propertyType": "Type de Propriété",
+    "anyType": "Tout Type",
+    "house": "Maison",
+    "apartment": "Appartement",
+    "condo": "Condo",
+    "townhouse": "Maison de Ville",
+    "bedrooms": "Chambres",
+    "bathrooms": "Salles de Bain",
+    "amenitiesTitle": "Équipements et Caractéristiques",
+    "pool": "Piscine",
+    "gym": "Salle de Sport",
+    "parking": "Stationnement",
+    "ac": "Climatisation",
+    "wifi": "Wifi Haut Débit",
+    "patio": "Patio / Terrasse",
+    "clearAll": "Effacer tous les filtres",
+    "apply": "Appliquer les Filtres"
+  },
+  "propertyCard": {
+    "beds": "Ch.",
+    "baths": "Bains"
+  },
+  "propertyDetail": {
+    "viewAllPhotos": "Voir Toutes les Photos",
+    "topRatedAgent": "Agent le Mieux Noté",
+    "scheduleVisit": "Planifier une Visite",
+    "contactAgent": "Contacter l'Agent",
+    "propertyFeatures": "Caractéristiques de la Propriété",
+    "squareMeters": "Mètres Carrés",
+    "bedrooms": "Chambres",
+    "bathrooms": "Salles de Bain",
+    "garage": "Garage",
+    "aboutHome": "À propos de ce bien",
+    "aboutDesc1": "Découvrez le luxe moderne dans cette maison architecturalement époustouflante située à {location}. Conçue avec l'accent sur la vie intérieure-extérieure, la résidence dispose de hauts plafonds qui inondent les intérieurs de lumière naturelle.",
+    "aboutDesc2": "La cuisine ouverte est équipée d'appareils électroménagers haut de gamme et de placards personnalisés, parfaite pour les amateurs de cuisine. Retraite dans la suite principale, un sanctuaire de relaxation avec une salle de bain d'inspiration spa et un balcon privé.",
+    "amenities": "Équipements",
+    "amenitiesList": ["Système Domotique", "Piscine", "Chauffage et Climatisation Central", "Recharge Véhicule Électrique", "Salle de Sport Privée", "Cave à Vin"],
+    "estimatedPayment": "Paiement Estimé",
+    "estimatedPaymentDesc": "À partir de {amount}/mois avec 20% d'apport",
+    "calculateMortgage": "Calculer le Prêt",
+    "premium": "Premium",
+    "mapNotAvailable": "Carte non disponible",
+    "galleryImage": "Image de galerie"
+  }
+}

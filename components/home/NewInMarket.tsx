@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import { PropertyCard } from "@/components/ui/PropertyCard";
 import { PaginationControls } from "@/components/home/PaginationControls";
 import type { Property } from "@/lib/mockData";
 import type { FilterType } from "@/lib/supabase";
+import { useLocale } from "@/lib/locale-context";
 
 interface NewInMarketProps {
   properties: Property[];
@@ -11,29 +14,31 @@ interface NewInMarketProps {
   filter: FilterType;
 }
 
-const FILTER_OPTIONS: { label: string; value: FilterType }[] = [
-  { label: "All", value: "All" },
-  { label: "Buy", value: "Buy" },
-  { label: "Rent", value: "Rent" },
-];
-
 export function NewInMarket({
   properties,
   totalCount,
   currentPage,
   filter,
 }: NewInMarketProps) {
+  const { t } = useLocale();
+
+  const FILTER_OPTIONS: { label: string; value: FilterType }[] = [
+    { label: t.newInMarket.filterAll, value: "All" },
+    { label: t.newInMarket.filterBuy, value: "Buy" },
+    { label: t.newInMarket.filterRent, value: "Rent" },
+  ];
+
   return (
     <section>
       <div className="flex items-end justify-between mb-8">
         <div>
           <h2 className="text-2xl font-light text-nordic-dark">
-            New in Market
+            {t.newInMarket.title}
           </h2>
           <p className="text-nordic-muted mt-1 text-sm">
-            Fresh opportunities added this week.{" "}
+            {t.newInMarket.subtitle}{" "}
             <span className="text-mosque font-medium">{totalCount}</span>{" "}
-            properties found.
+            {t.newInMarket.propertiesFound}
           </p>
         </div>
         <div className="hidden md:flex bg-white p-1 rounded-lg">
@@ -58,7 +63,7 @@ export function NewInMarket({
             <span className="material-icons text-4xl mb-3 block opacity-40">
               search_off
             </span>
-            <p>No properties found for this filter.</p>
+            <p>{t.newInMarket.noResults}</p>
           </div>
         ) : (
           properties.map((prop) => (

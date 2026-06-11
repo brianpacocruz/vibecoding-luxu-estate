@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLocale } from "@/lib/locale-context";
 
 interface SearchFiltersModalProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface SearchFiltersModalProps {
 
 export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps) {
   const router = useRouter();
+  const { t } = useLocale();
   const [location, setLocation] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -40,7 +42,7 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
     if (propertyType !== "Any Type") params.set("type", propertyType);
     if (beds > 0) params.set("beds", beds.toString());
     if (baths > 0) params.set("baths", baths.toString());
-    
+
     const activeAmenities = Object.entries(amenities).filter(([, v]) => v).map(([k]) => k);
     if (activeAmenities.length > 0) {
       params.set("amenities", activeAmenities.join(","));
@@ -70,7 +72,7 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
   return (
     <>
       {/* Modal Overlay */}
-      <div 
+      <div
         className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-40 transition-opacity"
         onClick={onClose}
       />
@@ -80,8 +82,8 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
         <main className="pointer-events-auto relative w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
           {/* Header */}
           <header className="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-30">
-            <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Filters</h1>
-            <button 
+            <h1 className="text-2xl font-semibold tracking-tight text-gray-900">{t.filters.title}</h1>
+            <button
               onClick={onClose}
               className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-500"
             >
@@ -94,7 +96,7 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
             {/* Section 1: Location */}
             <section>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
-                Location
+                {t.filters.location}
               </label>
               <div className="relative group">
                 <span className="material-icons absolute left-4 top-3.5 text-gray-400 group-focus-within:text-mosque transition-colors">
@@ -102,7 +104,7 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
                 </span>
                 <input
                   className="w-full pl-12 pr-4 py-3 bg-[#f5f8f6] border-0 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-mosque focus:bg-white transition-all shadow-sm outline-none"
-                  placeholder="City, neighborhood, or address"
+                  placeholder={t.filters.locationPlaceholder}
                   type="text"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
@@ -114,13 +116,13 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
             <section>
               <div className="flex justify-between items-end mb-4">
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Price Range
+                  {t.filters.priceRange}
                 </label>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-[#f5f8f6] p-3 rounded-lg border border-transparent focus-within:border-mosque/30 transition-colors">
                   <label className="block text-[10px] text-gray-500 uppercase font-medium mb-1">
-                    Min Price
+                    {t.filters.minPrice}
                   </label>
                   <div className="flex items-center">
                     <span className="text-gray-400 mr-1">$</span>
@@ -135,7 +137,7 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
                 </div>
                 <div className="bg-[#f5f8f6] p-3 rounded-lg border border-transparent focus-within:border-mosque/30 transition-colors">
                   <label className="block text-[10px] text-gray-500 uppercase font-medium mb-1">
-                    Max Price
+                    {t.filters.maxPrice}
                   </label>
                   <div className="flex items-center">
                     <span className="text-gray-400 mr-1">$</span>
@@ -156,19 +158,19 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
               {/* Property Type */}
               <div className="space-y-3">
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Property Type
+                  {t.filters.propertyType}
                 </label>
                 <div className="relative">
-                  <select 
+                  <select
                     className="w-full bg-[#f5f8f6] border-0 rounded-lg py-3 pl-4 pr-10 text-gray-900 appearance-none focus:ring-2 focus:ring-mosque cursor-pointer outline-none"
                     value={propertyType}
                     onChange={(e) => setPropertyType(e.target.value)}
                   >
-                    <option>Any Type</option>
-                    <option>House</option>
-                    <option>Apartment</option>
-                    <option>Condo</option>
-                    <option>Townhouse</option>
+                    <option value="Any Type">{t.filters.anyType}</option>
+                    <option value="House">{t.filters.house}</option>
+                    <option value="Apartment">{t.filters.apartment}</option>
+                    <option value="Condo">{t.filters.condo}</option>
+                    <option value="Townhouse">{t.filters.townhouse}</option>
                   </select>
                   <span className="material-icons absolute right-3 top-3 text-gray-400 pointer-events-none">
                     expand_more
@@ -180,16 +182,16 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
               <div className="space-y-4">
                 {/* Beds */}
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-900">Bedrooms</span>
+                  <span className="text-sm font-medium text-gray-900">{t.filters.bedrooms}</span>
                   <div className="flex items-center space-x-3 bg-[#f5f8f6] rounded-full p-1">
-                    <button 
+                    <button
                       onClick={() => setBeds(Math.max(0, beds - 1))}
                       className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-500 hover:text-mosque transition-colors"
                     >
                       <span className="material-icons text-base">remove</span>
                     </button>
                     <span className="text-sm font-semibold w-4 text-center">{beds}+</span>
-                    <button 
+                    <button
                       onClick={() => setBeds(beds + 1)}
                       className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-mosque hover:bg-mosque hover:text-white transition-colors"
                     >
@@ -200,16 +202,16 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
 
                 {/* Baths */}
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-900">Bathrooms</span>
+                  <span className="text-sm font-medium text-gray-900">{t.filters.bathrooms}</span>
                   <div className="flex items-center space-x-3 bg-[#f5f8f6] rounded-full p-1">
-                    <button 
+                    <button
                       onClick={() => setBaths(Math.max(0, baths - 1))}
                       className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-500 hover:text-mosque transition-colors"
                     >
                       <span className="material-icons text-base">remove</span>
                     </button>
                     <span className="text-sm font-semibold w-4 text-center">{baths}+</span>
-                    <button 
+                    <button
                       onClick={() => setBaths(baths + 1)}
                       className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-mosque hover:bg-mosque hover:text-white transition-colors"
                     >
@@ -223,38 +225,38 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
             {/* Section 4: Amenities */}
             <section>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
-                Amenities & Features
+                {t.filters.amenitiesTitle}
               </label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                <AmenityToggle 
-                  icon="pool" label="Swimming Pool" 
-                  isActive={amenities.pool} 
-                  onClick={() => toggleAmenity("pool")} 
+                <AmenityToggle
+                  icon="pool" label={t.filters.pool}
+                  isActive={amenities.pool}
+                  onClick={() => toggleAmenity("pool")}
                 />
-                <AmenityToggle 
-                  icon="fitness_center" label="Gym" 
-                  isActive={amenities.gym} 
-                  onClick={() => toggleAmenity("gym")} 
+                <AmenityToggle
+                  icon="fitness_center" label={t.filters.gym}
+                  isActive={amenities.gym}
+                  onClick={() => toggleAmenity("gym")}
                 />
-                <AmenityToggle 
-                  icon="local_parking" label="Parking" 
-                  isActive={amenities.parking} 
-                  onClick={() => toggleAmenity("parking")} 
+                <AmenityToggle
+                  icon="local_parking" label={t.filters.parking}
+                  isActive={amenities.parking}
+                  onClick={() => toggleAmenity("parking")}
                 />
-                <AmenityToggle 
-                  icon="ac_unit" label="Air Conditioning" 
-                  isActive={amenities.ac} 
-                  onClick={() => toggleAmenity("ac")} 
+                <AmenityToggle
+                  icon="ac_unit" label={t.filters.ac}
+                  isActive={amenities.ac}
+                  onClick={() => toggleAmenity("ac")}
                 />
-                <AmenityToggle 
-                  icon="wifi" label="High-speed Wifi" 
-                  isActive={amenities.wifi} 
-                  onClick={() => toggleAmenity("wifi")} 
+                <AmenityToggle
+                  icon="wifi" label={t.filters.wifi}
+                  isActive={amenities.wifi}
+                  onClick={() => toggleAmenity("wifi")}
                 />
-                <AmenityToggle 
-                  icon="deck" label="Patio / Terrace" 
-                  isActive={amenities.patio} 
-                  onClick={() => toggleAmenity("patio")} 
+                <AmenityToggle
+                  icon="deck" label={t.filters.patio}
+                  isActive={amenities.patio}
+                  onClick={() => toggleAmenity("patio")}
                 />
               </div>
             </section>
@@ -262,17 +264,17 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
 
           {/* Footer */}
           <footer className="bg-white border-t border-gray-100 px-8 py-6 sticky bottom-0 z-30 flex items-center justify-between">
-            <button 
+            <button
               onClick={clearFilters}
               className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors underline decoration-gray-300 underline-offset-4"
             >
-              Clear all filters
+              {t.filters.clearAll}
             </button>
-            <button 
+            <button
               onClick={handleApply}
               className="bg-mosque hover:bg-mosque/90 text-white px-8 py-3 rounded-lg font-medium shadow-lg shadow-mosque/30 transition-all flex items-center gap-2 transform active:scale-95"
             >
-              Apply Filters
+              {t.filters.apply}
               <span className="material-icons text-sm">arrow_forward</span>
             </button>
           </footer>
@@ -294,7 +296,7 @@ function AmenityToggle({ icon, label, isActive, onClick }: { icon: string; label
       </label>
     );
   }
-  
+
   return (
     <label className="cursor-pointer group" onClick={onClick}>
       <div className="h-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm flex items-center justify-center gap-2 transition-all hover:border-gray-300">

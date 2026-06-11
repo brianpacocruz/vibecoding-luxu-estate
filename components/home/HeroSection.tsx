@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { CategoryPill } from "@/components/ui/CategoryPill";
 import { categories } from "@/lib/mockData";
 import { SearchFiltersModal } from "@/components/ui/SearchFiltersModal";
+import { useLocale } from "@/lib/locale-context";
 
 export function HeroSection() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export function HeroSection() {
   const currentType = searchParams.get("type") || "All";
   const [searchQuery, setSearchQuery] = useState("");
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const { t } = useLocale();
 
   const handleSearch = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -37,9 +39,9 @@ export function HeroSection() {
     <section className="py-12 md:py-16">
       <div className="max-w-3xl mx-auto text-center space-y-8">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-nordic-dark leading-tight">
-          Find your{" "}
+          {t.hero.headline1}{" "}
           <span className="relative inline-block">
-            <span className="relative z-10 font-medium">sanctuary</span>
+            <span className="relative z-10 font-medium">{t.hero.headline2}</span>
             <span className="absolute bottom-2 left-0 w-full h-3 bg-mosque/20 -rotate-1 z-0"></span>
           </span>
           .
@@ -52,41 +54,41 @@ export function HeroSection() {
           </div>
           <input
             className="block w-full pl-12 pr-4 py-4 rounded-xl border-none bg-white text-nordic-dark shadow-soft placeholder-nordic-muted/60 focus:ring-2 focus:ring-mosque focus:bg-white transition-all text-lg outline-none"
-            placeholder="Search by city, neighborhood, or address..."
+            placeholder={t.hero.searchPlaceholder}
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
-          <button 
+          <button
             onClick={handleSearch}
             className="absolute inset-y-2 right-2 px-6 bg-mosque hover:bg-mosque/90 text-white font-medium rounded-lg transition-colors flex items-center justify-center shadow-lg shadow-mosque/20"
           >
-            Search
+            {t.hero.searchButton}
           </button>
         </div>
         <div className="flex items-center justify-center gap-3 overflow-x-auto hide-scroll py-2 px-4 -mx-4">
           {categories.map((cat) => (
-            <CategoryPill 
-              key={cat} 
-              category={cat} 
-              isActive={cat === currentType} 
+            <CategoryPill
+              key={cat}
+              category={cat}
+              isActive={cat === currentType}
               onClick={() => handleCategoryClick(cat)}
             />
           ))}
           <div className="w-px h-6 bg-nordic-dark/10 mx-2"></div>
-          <button 
+          <button
             onClick={() => setIsFiltersOpen(true)}
             className="whitespace-nowrap flex items-center gap-1 px-4 py-2 rounded-full text-nordic-dark font-medium text-sm hover:bg-black/5 transition-colors"
           >
-            <span className="material-icons text-base">tune</span> Filters
+            <span className="material-icons text-base">tune</span> {t.hero.filtersButton}
           </button>
         </div>
       </div>
-      
-      <SearchFiltersModal 
-        isOpen={isFiltersOpen} 
-        onClose={() => setIsFiltersOpen(false)} 
+
+      <SearchFiltersModal
+        isOpen={isFiltersOpen}
+        onClose={() => setIsFiltersOpen(false)}
       />
     </section>
   );
