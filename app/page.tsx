@@ -10,7 +10,15 @@ import {
 } from "@/lib/supabase";
 
 interface HomePageProps {
-  searchParams: Promise<{ page?: string; filter?: string }>;
+  searchParams: Promise<{ 
+    page?: string; 
+    filter?: string;
+    q?: string;
+    minPrice?: string;
+    maxPrice?: string;
+    beds?: string;
+    baths?: string;
+  }>;
 }
 
 export default async function Home({ searchParams }: HomePageProps) {
@@ -20,9 +28,17 @@ export default async function Home({ searchParams }: HomePageProps) {
   const filter: FilterType =
     rawFilter === "Buy" || rawFilter === "Rent" ? rawFilter : "All";
 
+  const searchOptions = {
+    q: params.q,
+    minPrice: params.minPrice ? parseInt(params.minPrice, 10) : undefined,
+    maxPrice: params.maxPrice ? parseInt(params.maxPrice, 10) : undefined,
+    beds: params.beds ? parseInt(params.beds, 10) : undefined,
+    baths: params.baths ? parseFloat(params.baths) : undefined,
+  };
+
   const [featuredProperties, { properties, totalCount }] = await Promise.all([
     getFeaturedProperties(),
-    getMarketProperties(currentPage, filter),
+    getMarketProperties(currentPage, filter, searchOptions),
   ]);
 
   return (
