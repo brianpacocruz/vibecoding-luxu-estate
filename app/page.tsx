@@ -18,6 +18,8 @@ interface HomePageProps {
     maxPrice?: string;
     beds?: string;
     baths?: string;
+    type?: string;
+    amenities?: string;
   }>;
 }
 
@@ -34,7 +36,19 @@ export default async function Home({ searchParams }: HomePageProps) {
     maxPrice: params.maxPrice ? parseInt(params.maxPrice, 10) : undefined,
     beds: params.beds ? parseInt(params.beds, 10) : undefined,
     baths: params.baths ? parseFloat(params.baths) : undefined,
+    type: params.type,
   };
+
+  const hasFilters = Boolean(
+    params.q ||
+    (params.type && params.type !== "All" && params.type !== "Any Type") ||
+    params.minPrice ||
+    params.maxPrice ||
+    params.beds ||
+    params.baths ||
+    params.amenities ||
+    (rawFilter && rawFilter !== "All")
+  );
 
   const [featuredProperties, { properties, totalCount }] = await Promise.all([
     getFeaturedProperties(),
@@ -46,7 +60,7 @@ export default async function Home({ searchParams }: HomePageProps) {
       <Navbar />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <HeroSection />
-        <FeaturedCollections properties={featuredProperties} />
+        {!hasFilters && <FeaturedCollections properties={featuredProperties} />}
         <Suspense fallback={null}>
           <NewInMarket
             properties={properties}

@@ -1,22 +1,36 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CategoryPill } from "@/components/ui/CategoryPill";
 import { categories } from "@/lib/mockData";
 import { SearchFiltersModal } from "@/components/ui/SearchFiltersModal";
 
 export function HeroSection() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentType = searchParams.get("type") || "All";
   const [searchQuery, setSearchQuery] = useState("");
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
   const handleSearch = () => {
+    const params = new URLSearchParams(searchParams.toString());
     if (searchQuery.trim()) {
-      router.push(`/?q=${encodeURIComponent(searchQuery)}`);
+      params.set("q", searchQuery);
     } else {
-      router.push("/");
+      params.delete("q");
     }
+    router.push(`/?${params.toString()}`);
+  };
+
+  const handleCategoryClick = (cat: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (cat === "All") {
+      params.delete("type");
+    } else {
+      params.set("type", cat);
+    }
+    router.push(`/?${params.toString()}`);
   };
 
   return (
@@ -52,8 +66,13 @@ export function HeroSection() {
           </button>
         </div>
         <div className="flex items-center justify-center gap-3 overflow-x-auto hide-scroll py-2 px-4 -mx-4">
-          {categories.map((cat, i) => (
-            <CategoryPill key={cat} category={cat} isActive={i === 0} />
+          {categories.map((cat) => (
+            <CategoryPill 
+              key={cat} 
+              category={cat} 
+              isActive={cat === currentType} 
+              onClick={() => handleCategoryClick(cat)}
+            />
           ))}
           <div className="w-px h-6 bg-nordic-dark/10 mx-2"></div>
           <button 

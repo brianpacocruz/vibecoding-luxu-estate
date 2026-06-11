@@ -67,6 +67,7 @@ export interface SearchOptions {
   maxPrice?: number;
   beds?: number;
   baths?: number;
+  type?: string;
 }
 
 /**
@@ -107,6 +108,9 @@ export async function getMarketProperties(
     if (options.baths) {
       query = query.gte("baths", options.baths);
     }
+    if (options.type && options.type !== "All" && options.type !== "Any Type") {
+      query = query.ilike("title", `%${options.type}%`);
+    }
   }
 
   const { data, count, error } = await query.range(from, to);
@@ -130,7 +134,8 @@ export async function getFeaturedProperties(): Promise<Property[]> {
     .from("properties")
     .select("*")
     .eq("is_featured", true)
-    .order("id", { ascending: true });
+    .order("id", { ascending: true })
+    .limit(2);
 
   if (error) {
     console.error("Supabase error:", error.message);
