@@ -10,7 +10,17 @@ import {
 } from "@/lib/supabase";
 
 interface HomePageProps {
-  searchParams: Promise<{ page?: string; filter?: string }>;
+  searchParams: Promise<{ 
+    page?: string; 
+    filter?: string;
+    q?: string;
+    minPrice?: string;
+    maxPrice?: string;
+    beds?: string;
+    baths?: string;
+    type?: string;
+    amenities?: string;
+  }>;
 }
 
 export default async function Home({ searchParams }: HomePageProps) {
@@ -20,9 +30,29 @@ export default async function Home({ searchParams }: HomePageProps) {
   const filter: FilterType =
     rawFilter === "Buy" || rawFilter === "Rent" ? rawFilter : "All";
 
+  const searchOptions = {
+    q: params.q,
+    minPrice: params.minPrice ? parseInt(params.minPrice, 10) : undefined,
+    maxPrice: params.maxPrice ? parseInt(params.maxPrice, 10) : undefined,
+    beds: params.beds ? parseInt(params.beds, 10) : undefined,
+    baths: params.baths ? parseFloat(params.baths) : undefined,
+    type: params.type,
+  };
+
+  const hasFilters = Boolean(
+    params.q ||
+    (params.type && params.type !== "All" && params.type !== "Any Type") ||
+    params.minPrice ||
+    params.maxPrice ||
+    params.beds ||
+    params.baths ||
+    params.amenities ||
+    (rawFilter && rawFilter !== "All")
+  );
+
   const [featuredProperties, { properties, totalCount }] = await Promise.all([
     getFeaturedProperties(),
-    getMarketProperties(currentPage, filter),
+    getMarketProperties(currentPage, filter, searchOptions),
   ]);
 
   return (
@@ -30,7 +60,7 @@ export default async function Home({ searchParams }: HomePageProps) {
       <Navbar />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <HeroSection />
-        <FeaturedCollections properties={featuredProperties} />
+        {!hasFilters && <FeaturedCollections properties={featuredProperties} />}
         <Suspense fallback={null}>
           <NewInMarket
             properties={properties}

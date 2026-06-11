@@ -61,12 +61,22 @@ const STATUS_MAP: Record<FilterType, string[]> = {
   Rent: ["FOR RENT"],
 };
 
+export interface SearchOptions {
+  q?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  beds?: number;
+  baths?: number;
+  type?: string;
+}
+
 /**
  * Fetch paginated non-featured properties for the "New in Market" section.
  */
 export async function getMarketProperties(
   page: number,
-  filter: FilterType
+  filter: FilterType,
+  options?: SearchOptions
 ): Promise<{ properties: Property[]; totalCount: number }> {
   const from = (page - 1) * PROPERTIES_PER_PAGE;
   const to = from + PROPERTIES_PER_PAGE - 1;
@@ -78,8 +88,29 @@ export async function getMarketProperties(
     .order("created_at", { ascending: true });
 
   const statuses = STATUS_MAP[filter];
-  if (statuses.length > 0) {
+  if (statuses && statuses.length > 0) {
     query = query.in("status", statuses);
+  }
+
+  if (options) {
+    if (options.q) {
+      query = query.or(`title.ilike.%${options.q}%,location.ilike.%${options.q}%`);
+    }
+    if (options.minPrice) {
+      query = query.gte("price", options.minPrice);
+    }
+    if (options.maxPrice) {
+      query = query.lte("price", options.maxPrice);
+    }
+    if (options.beds) {
+      query = query.gte("beds", options.beds);
+    }
+    if (options.baths) {
+      query = query.gte("baths", options.baths);
+    }
+    if (options.type && options.type !== "All" && options.type !== "Any Type") {
+      query = query.ilike("title", `%${options.type}%`);
+    }
   }
 
   const { data, count, error } = await query.range(from, to);
@@ -103,7 +134,8 @@ export async function getFeaturedProperties(): Promise<Property[]> {
     .from("properties")
     .select("*")
     .eq("is_featured", true)
-    .order("id", { ascending: true });
+    .order("id", { ascending: true })
+    .limit(2);
 
   if (error) {
     console.error("Supabase error:", error.message);
