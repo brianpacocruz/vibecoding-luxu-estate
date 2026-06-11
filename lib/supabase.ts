@@ -23,6 +23,10 @@ interface PropertyRow {
   status: Property["status"];
   is_featured: boolean;
   created_at: string;
+  slug: string;
+  images: string[];
+  lat: number | null;
+  lng: number | null;
 }
 
 function rowToProperty(row: PropertyRow): Property {
@@ -39,6 +43,10 @@ function rowToProperty(row: PropertyRow): Property {
     imageAlt: row.image_alt,
     status: row.status,
     isFeatured: row.is_featured,
+    slug: row.slug,
+    images: row.images,
+    lat: row.lat,
+    lng: row.lng,
   };
 }
 
@@ -105,4 +113,22 @@ export async function getFeaturedProperties(): Promise<Property[]> {
   }
 
   return (data as PropertyRow[]).map(rowToProperty);
+}
+
+/**
+ * Fetch a single property by its slug.
+ */
+export async function getPropertyBySlug(slug: string): Promise<Property | null> {
+  const { data, error } = await supabase
+    .from("properties")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+
+  if (error) {
+    console.error("Supabase error:", error.message);
+    return null;
+  }
+
+  return data ? rowToProperty(data as PropertyRow) : null;
 }

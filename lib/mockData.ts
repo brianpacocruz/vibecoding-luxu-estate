@@ -14,6 +14,10 @@ export interface Property {
   imageAlt: string;
   status: StatusType;
   isFeatured?: boolean;
+  slug?: string;
+  images?: string[];
+  lat?: number | null;
+  lng?: number | null;
 }
 
 export const featuredProperties: Property[] = [
