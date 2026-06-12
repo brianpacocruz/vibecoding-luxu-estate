@@ -1,9 +1,11 @@
 "use client";
 
-import { supabase } from "@/lib/supabase";
+import { getSupabaseBrowserClient } from "@/lib/supabase-browser";
 import { useState } from "react";
 
 export default function LoginPage() {
+  // Mismo singleton que usa auth-context — una sola instancia de auth en todo el browser
+  const supabase = getSupabaseBrowserClient();
   const [loadingGoogle, setLoadingGoogle] = useState(false);
   const [loadingGithub, setLoadingGithub] = useState(false);
 
