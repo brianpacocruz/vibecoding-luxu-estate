@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
 import { LocaleProvider } from "@/lib/locale-context";
+import { AuthProvider } from "@/lib/auth-context";
 import {
   DEFAULT_LOCALE,
   LOCALE_COOKIE,
@@ -48,9 +49,11 @@ export default async function RootLayout({
         className="bg-background-light font-display selection:bg-mosque selection:text-white"
         suppressHydrationWarning
       >
-        <LocaleProvider initialLocale={locale} initialTranslations={translations}>
-          {children}
-        </LocaleProvider>
+        <AuthProvider>
+          <LocaleProvider initialLocale={locale} initialTranslations={translations}>
+            {children}
+          </LocaleProvider>
+        </AuthProvider>
       </body>
     </html>
   );
