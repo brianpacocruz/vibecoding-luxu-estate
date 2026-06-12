@@ -4,7 +4,21 @@ import type { Property } from "./mockData";
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+/**
+ * Cliente de solo lectura para queries PÚBLICAS (propiedades sin auth).
+ * No guarda sesión → no interfiere con el cliente SSR que maneja el auth en cookies.
+ * Para queries autenticadas usa createSupabaseServerClient() o getSupabaseBrowserClient().
+ */
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+    detectSessionInUrl: false,
+    // storageKey único para que Supabase no confunda este cliente
+    // con el GoTrueClient SSR que maneja el auth real
+    storageKey: "sb-public-no-auth",
+  },
+});
 
 // ──────────────────────────────────────────────
 // Types that map Supabase snake_case → camelCase
@@ -161,4 +175,114 @@ export async function getPropertyBySlug(slug: string): Promise<Property | null> 
   }
 
   return data ? rowToProperty(data as PropertyRow) : null;
+}
+
+// ──────────────────────────────────────────────
+// User Roles
+// ──────────────────────────────────────────────
+
+export type UserRoleType = "admin" | "agent" | "user";
+
+export interface UserRole {
+  id: string;
+  userId: string;
+  role: UserRoleType;
+  email: string | null;
+  fullName: string | null;
+  avatarUrl: string | null;
+  createdAt: string;
+}
+
+interface UserRoleRow {
+  id: string;
+  user_id: string;
+  role: UserRoleType;
+  email: string | null;
+  full_name: string | null;
+  avatar_url: string | null;
+  created_at: string;
+}
+
+function rowToUserRole(row: UserRoleRow): UserRole {
+  return {
+    id: row.id,
+    userId: row.user_id,
+    role: row.role,
+    email: row.email,
+    fullName: row.full_name,
+    avatarUrl: row.avatar_url,
+    createdAt: row.created_at,
+  };
+}
+
+/**
+ * Get the role for a single authenticated user.
+ */
+export async function getUserRole(userId: string): Promise<UserRole | null> {
+  const { data, error } = await supabase
+    .from("user_roles")
+    .select("*")
+    .eq("user_id", userId)
+    .single();
+
+  if (error) {
+    console.error("Error fetching user role:", error.message);
+    return null;
+  }
+
+  return data ? rowToUserRole(data as UserRoleRow) : null;
+}
+
+/**
+ * Get all users with roles (admin only).
+ */
+export async function getAllUsersWithRoles(): Promise<UserRole[]> {
+  const { data, error } = await supabase
+    .from("user_roles")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching all user roles:", error.message);
+    return [];
+  }
+
+  return (data as UserRoleRow[]).map(rowToUserRole);
+}
+
+/**
+ * Update a user's role (admin only).
+ */
+export async function updateUserRole(
+  userId: string,
+  role: UserRoleType
+): Promise<boolean> {
+  const { error } = await supabase
+    .from("user_roles")
+    .update({ role, updated_at: new Date().toISOString() })
+    .eq("user_id", userId);
+
+  if (error) {
+    console.error("Error updating user role:", error.message);
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Get all properties for admin dashboard (no pagination).
+ */
+export async function getAllProperties(): Promise<Property[]> {
+  const { data, error } = await supabase
+    .from("properties")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Supabase error:", error.message);
+    return [];
+  }
+
+  return (data as PropertyRow[]).map(rowToProperty);
 }
