@@ -35,6 +35,7 @@ interface PropertyRow {
   image_alt: string;
   status: Property["status"];
   is_featured: boolean;
+  is_disabled: boolean;
   created_at: string;
   slug: string;
   images: string[];
@@ -55,6 +56,7 @@ function rowToProperty(row: PropertyRow): Property {
     imageAlt: row.image_alt,
     status: row.status,
     isFeatured: row.is_featured,
+    isDisabled: row.is_disabled,
     slug: row.slug,
     images: row.images,
     lat: row.lat,
@@ -99,6 +101,7 @@ export async function getMarketProperties(
     .from("properties")
     .select("*", { count: "exact" })
     .eq("is_featured", false)
+    .eq("is_disabled", false)
     .order("created_at", { ascending: true });
 
   const statuses = STATUS_MAP[filter];
@@ -148,6 +151,7 @@ export async function getFeaturedProperties(): Promise<Property[]> {
     .from("properties")
     .select("*")
     .eq("is_featured", true)
+    .eq("is_disabled", false)
     .order("id", { ascending: true })
     .limit(2);
 
@@ -167,6 +171,24 @@ export async function getPropertyBySlug(slug: string): Promise<Property | null> 
     .from("properties")
     .select("*")
     .eq("slug", slug)
+    .single();
+
+  if (error) {
+    console.error("Supabase error:", error.message);
+    return null;
+  }
+
+  return data ? rowToProperty(data as PropertyRow) : null;
+}
+
+/**
+ * Fetch a single property by its ID.
+ */
+export async function getPropertyById(id: string): Promise<Property | null> {
+  const { data, error } = await supabase
+    .from("properties")
+    .select("*")
+    .eq("id", id)
     .single();
 
   if (error) {

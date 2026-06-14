@@ -2,6 +2,7 @@
 
 import type { Property } from "@/lib/mockData";
 import Link from "next/link";
+import { togglePropertyStatus } from "@/app/admin/properties/actions";
 
 const STATUS_COLORS: Record<string, string> = {
   "FOR SALE": "bg-emerald-50 text-emerald-700 border-emerald-200",
@@ -38,7 +39,7 @@ export default function PropertiesTable({ properties }: { properties: Property[]
         </thead>
         <tbody className="divide-y divide-black/5 bg-white">
           {properties.map((p) => (
-            <tr key={p.id} className="hover:bg-background-light/50 transition-colors group">
+            <tr key={p.id} className={`hover:bg-background-light/50 transition-colors group ${p.isDisabled ? 'opacity-50 grayscale' : ''}`}>
               <td className="px-5 py-4">
                 <p className="font-semibold text-nordic-dark line-clamp-1 max-w-[220px]">
                   {p.title}
@@ -74,14 +75,35 @@ export default function PropertiesTable({ properties }: { properties: Property[]
                 )}
               </td>
               <td className="px-5 py-4 text-center">
-                <Link
-                  href={`/property/${p.slug}`}
-                  target="_blank"
-                  className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-nordic-dark/5 hover:bg-mosque hover:text-white text-nordic-muted transition-all duration-200"
-                  title="View property"
-                >
-                  <span className="material-icons text-sm">open_in_new</span>
-                </Link>
+                <div className="flex items-center justify-center gap-2">
+                  <Link
+                    href={`/property/${p.slug}`}
+                    target="_blank"
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-nordic-dark/5 hover:bg-sky-500 hover:text-white text-nordic-muted transition-all duration-200"
+                    title="View property"
+                  >
+                    <span className="material-icons text-sm">open_in_new</span>
+                  </Link>
+                  <Link
+                    href={`/admin/properties/${p.id}`}
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-nordic-dark/5 hover:bg-amber-500 hover:text-white text-nordic-muted transition-all duration-200"
+                    title="Edit property"
+                  >
+                    <span className="material-icons text-sm">edit</span>
+                  </Link>
+                  <button
+                    onClick={() => togglePropertyStatus(p.id, !p.isDisabled)}
+                    type="button"
+                    className={`inline-flex items-center justify-center w-8 h-8 rounded-lg bg-nordic-dark/5 transition-all duration-200 ${
+                      p.isDisabled
+                        ? "bg-orange-500 text-white"
+                        : "hover:bg-orange-500 hover:text-white text-nordic-muted"
+                    }`}
+                    title={p.isDisabled ? "Enable property" : "Disable property"}
+                  >
+                    <span className="material-icons text-sm">{p.isDisabled ? "check_circle" : "block"}</span>
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
