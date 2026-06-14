@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import React, { useState, useTransition } from "react";
+import dynamic from "next/dynamic";
 import { createProperty, updateProperty } from "@/app/admin/properties/actions";
 import type { Property } from "@/lib/mockData";
+
+const LocationMap = dynamic(() => import("./LocationMap"), { ssr: false });
 
 interface PropertyFormProps {
   isEditing?: boolean;
@@ -18,6 +21,8 @@ export default function PropertyForm({ isEditing = false, property }: PropertyFo
   const [description, setDescription] = useState("");
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>(property?.images || []);
+  const [lat, setLat] = useState<number | null>(property?.lat ?? null);
+  const [lng, setLng] = useState<number | null>(property?.lng ?? null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -43,6 +48,8 @@ export default function PropertyForm({ isEditing = false, property }: PropertyFo
     formData.set("beds", beds.toString());
     formData.set("baths", baths.toString());
     formData.set("parking", parking.toString());
+    if (lat !== null) formData.set("lat", lat.toString());
+    if (lng !== null) formData.set("lng", lng.toString());
     
     // Remove the default empty file input
     formData.delete("imageInput");
@@ -225,13 +232,26 @@ export default function PropertyForm({ isEditing = false, property }: PropertyFo
                 <label className="block text-sm font-medium text-nordic mb-1.5 font-sf-pro" htmlFor="location">Address</label>
                 <input defaultValue={property?.location} name="location" className="w-full px-4 py-2.5 rounded-md border border-gray-200 bg-white text-nordic placeholder-gray-400 focus:ring-1 focus:ring-mosque focus:border-mosque transition-all text-sm font-sf-pro" id="location" placeholder="Street Address, City, Zip" type="text" />
               </div>
-              <div className="relative h-48 w-full rounded-lg overflow-hidden bg-gray-100 border border-gray-200 group">
-                <img alt="Map view" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-500" src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=400&q=80" />
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <span className="bg-white/90 text-nordic px-3 py-1.5 rounded shadow-sm backdrop-blur-sm text-xs font-bold font-sf-pro flex items-center gap-1">
-                    <span className="material-icons text-sm text-mosque">map</span> Preview
-                  </span>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-nordic mb-1.5 font-sf-pro" htmlFor="lat">Latitude</label>
+                  <input value={lat ?? ""} onChange={(e) => setLat(e.target.value ? Number(e.target.value) : null)} className="w-full px-3 py-2.5 rounded-md border border-gray-200 bg-white text-nordic text-sm focus:ring-1 focus:ring-mosque focus:border-mosque transition-all" id="lat" placeholder="e.g. 40.7128" type="number" step="any" />
                 </div>
+                <div>
+                  <label className="block text-xs font-medium text-nordic mb-1.5 font-sf-pro" htmlFor="lng">Longitude</label>
+                  <input value={lng ?? ""} onChange={(e) => setLng(e.target.value ? Number(e.target.value) : null)} className="w-full px-3 py-2.5 rounded-md border border-gray-200 bg-white text-nordic text-sm focus:ring-1 focus:ring-mosque focus:border-mosque transition-all" id="lng" placeholder="e.g. -74.0060" type="number" step="any" />
+                </div>
+              </div>
+              <div className="relative h-64 w-full rounded-lg overflow-hidden bg-gray-100 border border-gray-200 group z-0">
+                {(lat !== null && lng !== null) ? (
+                  <LocationMap lat={lat} lng={lng} onChange={(newLat, newLng) => { setLat(newLat); setLng(newLng); }} />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-gray-50 text-gray-400 p-6 text-center">
+                    <span className="material-icons text-4xl mb-3 text-gray-300">map</span>
+                    <p className="text-sm font-sf-pro font-medium text-gray-500">Enter latitude and longitude</p>
+                    <p className="text-xs font-sf-pro mt-1 text-gray-400">The interactive map will appear here once coordinates are provided.</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

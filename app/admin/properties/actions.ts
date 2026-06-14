@@ -59,6 +59,11 @@ export async function createProperty(formData: FormData) {
   const baths = Number(formData.get("baths"));
   const parking = Number(formData.get("parking")); // Not in PropertyRow yet, but could be added or ignored
   
+  const latStr = formData.get("lat");
+  const lngStr = formData.get("lng");
+  const lat = latStr ? Number(latStr) : null;
+  const lng = lngStr ? Number(lngStr) : null;
+  
   // Note: we're reusing `imageAlt` for description or title if empty
   const imageAlt = title;
   const slug = generateSlug(title);
@@ -82,6 +87,8 @@ export async function createProperty(formData: FormData) {
     is_disabled: false,
     slug,
     images: uploadedUrls,
+    lat,
+    lng,
   };
 
   const { error } = await supabase.from("properties").insert(newProperty);
@@ -109,6 +116,11 @@ export async function updateProperty(id: string, formData: FormData) {
   const beds = Number(formData.get("beds"));
   const baths = Number(formData.get("baths"));
 
+  const latStr = formData.get("lat");
+  const lngStr = formData.get("lng");
+  const lat = latStr ? Number(latStr) : null;
+  const lng = lngStr ? Number(lngStr) : null;
+
   const slug = generateSlug(title);
 
   // Check if there are new files to upload
@@ -131,6 +143,8 @@ export async function updateProperty(id: string, formData: FormData) {
     status,
     slug,
     images: allImages,
+    lat,
+    lng,
   };
 
   const { error } = await supabase
