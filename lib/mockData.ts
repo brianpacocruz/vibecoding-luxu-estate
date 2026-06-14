@@ -13,6 +13,7 @@ export interface Property {
   imageAlt: string;
   status: StatusType;
   isFeatured?: boolean;
+  isDisabled?: boolean;
   slug?: string;
   images: string[];
   lat?: number | null;

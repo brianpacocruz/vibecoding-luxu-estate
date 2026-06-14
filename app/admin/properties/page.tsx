@@ -1,5 +1,6 @@
 import { getAllProperties } from "@/lib/supabase";
 import PropertiesTable from "@/components/admin/PropertiesTable";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -14,16 +15,25 @@ export default async function AdminPropertiesPage() {
   return (
     <div className="p-8 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-9 h-9 bg-mosque/10 rounded-xl flex items-center justify-center">
-            <span className="material-icons text-mosque text-base">apartment</span>
+      <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-9 h-9 bg-mosque/10 rounded-xl flex items-center justify-center">
+              <span className="material-icons text-mosque text-base">apartment</span>
+            </div>
+            <h1 className="text-2xl font-bold text-nordic-dark">Properties</h1>
           </div>
-          <h1 className="text-2xl font-bold text-nordic-dark">Properties</h1>
+          <p className="text-nordic-muted">
+            Manage all your property listings in one place.
+          </p>
         </div>
-        <p className="text-nordic-muted">
-          Manage all your property listings in one place.
-        </p>
+        <Link
+          href="/admin/properties/new"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-mosque hover:bg-nordic text-white font-medium shadow-md hover:shadow-lg transition-all duration-200 text-sm"
+        >
+          <span className="material-icons text-sm">add</span>
+          Add Property
+        </Link>
       </div>
 
       {/* Quick stats bar */}
