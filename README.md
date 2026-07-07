@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Luxe Estate 🏡
 
-## Getting Started
+Luxe Estate es una plataforma moderna para el sector inmobiliario que permite a los usuarios explorar, buscar y visualizar propiedades exclusivas con una interfaz premium y un diseño dinámico.
 
-First, run the development server:
+## 🚀 Live Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+El proyecto se encuentra desplegado y accesible públicamente a través de Vercel. Puedes visualizar la aplicación en vivo aquí:
+👉 **[Luxe Estate en Vercel](https://vibecoding-luxu-estate-gules.vercel.app)**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tecnologías Utilizadas
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Este proyecto ha sido construido utilizando tecnologías modernas para garantizar rendimiento, escalabilidad y una experiencia de usuario excepcional:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework**: [Next.js](https://nextjs.org/) (React)
+- **Estilos**: Vanilla CSS con un enfoque en diseño de alta calidad, animaciones fluidas y accesibilidad.
+- **Base de Datos y Backend as a Service (BaaS)**: [Supabase](https://supabase.com/)
+- **Despliegue**: [Vercel](https://vercel.com/)
 
-## Learn More
+## 🗄️ Supabase y Vercel
 
-To learn more about Next.js, take a look at the following resources:
+El backend de la aplicación, incluyendo la base de datos de propiedades, está gestionado a través de **Supabase**. Supabase ofrece una alternativa open-source a Firebase, proporcionando una base de datos PostgreSQL, autenticación, almacenamiento y APIs en tiempo real.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Integración:**
+El proyecto en Vercel está enlazado directamente con el entorno de Supabase mediante variables de entorno (`.env.local`), lo que permite que el frontend en Next.js se comunique de forma segura con la base de datos para obtener los listados de propiedades mostrados en la aplicación.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ⚙️ Configuración Local
 
-## Deploy on Vercel
+Si deseas ejecutar este proyecto en tu entorno local:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Clona el repositorio**
+2. **Instala las dependencias**:
+   ```bash
+   npm install
+   ```
+3. **Configura las variables de entorno**:
+   Asegúrate de crear un archivo `.env.local` en la raíz del proyecto e incluye tus credenciales de Supabase:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=tu_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_supabase_anon_key
+   ```
+4. **Ejecuta el servidor de desarrollo**:
+   ```bash
+   npm run dev
+   ```
+   La aplicación estará disponible en `http://localhost:3000`.
